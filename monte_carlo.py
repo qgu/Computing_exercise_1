@@ -1,5 +1,5 @@
 import numpy as np
-
+from time import time
 
 # Defining the function to be integrated
 def f(x):
@@ -37,18 +37,22 @@ def monte_carlo_integration(upper, lower, no_of_samples):
 
     return [integration_result, error]
 
+t1 = time()
+monte_carlo_integration(np.pi/8, 0, 10000000)
+t2 = time()
+print t2-t1
 # Setting up repeated computation
-range_of_samples = [10**x for x in range(2,8)]
-no_of_repeats = 100
-results = np.zeros(no_of_repeats)
+#range_of_samples = [10**x for x in range(2,8)]
+#no_of_repeats = 100
+#results = np.zeros(no_of_repeats)
 
 # Compute and write to file
-with open('data_file','w+') as data_file:
-    for no_of_samples in range_of_samples:
-        for ii in range(0,no_of_repeats):
-            M = monte_carlo_integration(np.pi/8, 0, no_of_samples)
-            results[ii] = M[0]
-        data_file.write( str(no_of_samples) + ',' + str(np.std(results)/np.sqrt(no_of_repeats))[1:-2]  + '\n' )
+#with open('data_file','w+') as data_file:
+#    for no_of_samples in range_of_samples:
+#        for ii in range(0,no_of_repeats):
+#            M = monte_carlo_integration(np.pi/8, 0, no_of_samples)
+#            results[ii] = M[0]
+#        data_file.write( str(no_of_samples) + ',' + str(np.std(results)/np.sqrt(no_of_repeats))[1:-2]  + '\n' )
     
 
     
