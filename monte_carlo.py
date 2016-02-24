@@ -1,17 +1,18 @@
 import numpy as np
-from time import time
 
+
+# Defining the function to be integrated
 def f(x):
     sum_of_x = sum(x_value for x_value in x)
-    value = np.sin(sum_of_x) * np.power(10,6)
+    value = np.sin(sum_of_x) * 1000000
     return value
-    return 1
-    
+
+# Generating each Monte-Carlo step.    
 def monte_carlo_step(f, upper, lower, no_of_variables=8):
     x = lower + (upper - lower) * np.random.random(no_of_variables)
-    #x = [1,1,1,1,1,1,1,1]
     return f(x)
 
+# Finding the sum of f(x) and f^2(x)
 def monte_carlo_integration_unit(upper, lower, no_of_samples):
     step = range(0,no_of_samples)
     f_x = 0
@@ -24,6 +25,7 @@ def monte_carlo_integration_unit(upper, lower, no_of_samples):
 
     return [f_x, f_x2] 
 
+# Computing final results and error
 def monte_carlo_integration(upper, lower, no_of_samples):
     M = monte_carlo_integration_unit(upper, lower, no_of_samples)
     [f_bar, f2_bar] = np.divide(M,no_of_samples)
@@ -35,20 +37,18 @@ def monte_carlo_integration(upper, lower, no_of_samples):
 
     return [integration_result, error]
 
-def estimated_computation_time(no_of_samples):
-    return 0.0000331 * no_of_samples
-
-range_of_samples = [10**x for x in range(2,5)]
-no_of_repeats = 10
-x = np.arange(0,100)
+# Setting up repeated computation
+range_of_samples = [10**x for x in range(2,8)]
+no_of_repeats = 100
 results = np.zeros(no_of_repeats)
 
-with open('test_file','w+') as file:
+# Compute and write to file
+with open('data_file','w+') as data_file:
     for no_of_samples in range_of_samples:
         for ii in range(0,no_of_repeats):
             M = monte_carlo_integration(np.pi/8, 0, no_of_samples)
             results[ii] = M[0]
-        file.write( str(no_of_samples) + str(np.std(results))[1:-2] )
+        data_file.write( str(no_of_samples) + ',' + str(np.std(results)/np.sqrt(no_of_repeats))[1:-2]  + '\n' )
     
 
     
